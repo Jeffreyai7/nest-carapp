@@ -15,13 +15,13 @@ export class UsersService {
         return this.usersRepository.save(user);
         }
 
-        find(email: string) {
-        return this.usersRepository.find({ where: { email } });
+       async find(email: string) {
+        return await this.usersRepository.find({ where: { email } });
         }
 
     
-        findOne(id: number){
-        return this.usersRepository.findOne({where: {id}});
+        async findOne(id: number){
+        return await this.usersRepository.findOne({where: {id}});
         }
 
         async update(id: number, attrs: Partial<User>) {

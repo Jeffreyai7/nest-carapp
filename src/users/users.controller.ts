@@ -27,6 +27,12 @@ export class UsersController {
     whoAmI(@Session() session: any){
         return this.usersService.findOne(session.userId);
     }
+
+    @Post('/signout')
+    signOut(@Session() session: any){           
+        session.userId = null;
+        return this.usersService.findOne(session.userId);
+    }
     
     @Post('/signup')
    async createUser(@Body() body: CreateUserDto, @Session() session: any) {

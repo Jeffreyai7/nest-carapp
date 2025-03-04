@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { Serialize } from "../interceptors/serialize.interceptor";
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
+import { aw } from 'framer-motion/dist/types.d-6pKw1mTI';
 
 
 @Controller('auth')
@@ -24,8 +25,11 @@ export class UsersController {
     // }
     
     @Get('/whoami')
-    whoAmI(@Session() session: any){
-        return this.usersService.findOne(session.userId);
+   async whoAmI(@Session() session: any){
+        const user = await this.usersService.findOne(session.userId);
+        if(!user){
+            throw new NotFoundException('User not found');
+        }   
     }
 
     @Post('/signout')

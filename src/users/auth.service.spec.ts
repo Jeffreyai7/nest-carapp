@@ -3,6 +3,7 @@ import { AuthService } from "./auth.service";
 import { UsersService } from "./users.service"; 
 import { User } from "./user.entity";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { aw } from "framer-motion/dist/types.d-6pKw1mTI";
 
 
 describe("AuthService", () => {
@@ -11,9 +12,18 @@ describe("AuthService", () => {
     let fakeUsersService: Partial<UsersService>;
     
     beforeEach(async () => {
+        const users: User[] = [];
         fakeUsersService = {
-            find: () => Promise.resolve([]),
-            create: (email: string, password: string) => Promise.resolve({id: 1, email, password} as User)
+            find: (email: string) => {
+              const filteredUsers = users.filter((user) => user.email === email);
+              return Promise.resolve(filteredUsers);
+              },  
+            create: (email: string, password: string) => 
+            {
+                const user = { id: Math.floor(Math.random() * 999999), email, password } as User;
+                users.push(user);
+                return Promise.resolve(user);
+            }
         }    
         
         const module = await Test.createTestingModule({
@@ -71,15 +81,11 @@ describe("AuthService", () => {
 
 
       it('returns a user if correct password is provided', async () => {
-        fakeUsersService.find = () =>
-          Promise.resolve([
-            { email: 'asdf@asdf.com', password: 'laskdjf' } as User,
-          ]);
-        const user = expect(
-          service.signin('laskdjf@alskdfj.com', 'passowrd')
-        )
-        expect(user).toBeDefined();
-      });
+       await service.signup('asdf@asdf.com', 'laskdjf');
+        const user = await service.signin('asdf@asdf.com', 'laskdjf'); // ✅ Corrected
+        expect(user.password).toBeDefined(); // ✅ Now user contains a resolved value
+    });
+    
 
       
 

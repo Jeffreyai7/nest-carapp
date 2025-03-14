@@ -16,12 +16,17 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/ (POST)', () => {
 
-   
+    const email = "yaam@gmail.com";
+    const password = "passwordss";
     return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect("Hello World!")
+      .post('/auth/signup')
+      .send({ email, password })
+      .expect(201)
+      .then((res) => {
+        expect(res.body.email).toEqual(email);
+        expect(res.body.password).toBeUndefined();
+      });
   });
 });

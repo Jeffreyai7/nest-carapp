@@ -47,7 +47,6 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
   
   it("findAllUsers returns a list of users with the given email", async() => {
     const users = await controller.findAllUsers("asdf@asdf.com");
@@ -65,16 +64,12 @@ describe('UsersController', () => {
     await expect(controller.findUser('1')).rejects.toThrow(NotFoundException);
   });
 
-
   it("signin updates session object and returns user", async() => {
-    const session = { userId: -10 };
+    const session = { userId: 2 };
     const user = await controller.login({email: "asdf@asdf.com", password: "asdf" }, session);
 
     expect(user.id).toEqual(1);
     expect(session.userId).toEqual(1);
 
   });
-
-
-
 });

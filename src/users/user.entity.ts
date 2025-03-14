@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, AfterInsert, AfterUpdate, AfterRemove, OneToMany } from "typeorm";
-import { Report } from "src/reports/report.entity";
+import { Report } from "src/reports/reports.entity";
 
 @Entity()
 export class User{

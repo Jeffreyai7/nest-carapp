@@ -21,7 +21,7 @@ constructor(private reportsService: ReportsService) {}
 
     @Patch("/:id")
     approvedReport(@Param("id") id: string, @Body() body: ApproveReportDto){
-        
+        return this.reportsService.changeApproval(id, body.approved)
     }
 
 }
